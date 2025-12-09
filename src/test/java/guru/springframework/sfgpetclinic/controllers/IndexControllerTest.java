@@ -1,7 +1,10 @@
 package guru.springframework.sfgpetclinic.controllers;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,9 +23,28 @@ class IndexControllerTest {
     }
 
     @Test
-    void oupsHandler() {
-        assertTrue("notimplemented".equals(indexController.oupsHandler()), () -> "Wow, this is a really long " +
-            "and pointless (and 'expensive') " +
-            "error message to send back, isn't it?");
+    void oopsHandler() {
+        assertThrows(CustomExceptionThrowingException.class, () -> {
+            indexController.oopsHandler();
+        });
     }
+
+    @Disabled("Testing timeout")
+    @Test
+    void testTimeout() {
+        assertTimeout(Duration.ofMillis(100), () -> {
+            Thread.sleep(2000);
+            System.out.println("Arrived at testTimeout");
+        });
+    }
+
+    @Disabled("Testing timeout")
+    @Test
+    void testTimeoutPreempt() {
+        assertTimeoutPreemptively(Duration.ofMillis(100), () -> {
+            Thread.sleep(2000);
+            System.out.println("Arrived at testTimeoutPreempt");
+        });
+    }
+
 }
